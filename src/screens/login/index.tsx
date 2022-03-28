@@ -78,7 +78,6 @@ const Login = () => {
       </>
     )
   }
-
   if (!fontsLoaded) return <AppLoading />
   else return componentScreen()
 }

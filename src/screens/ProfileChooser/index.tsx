@@ -1,22 +1,23 @@
 import React from 'react'
-import { Alert, Image, View, Text, Dimensions, ListRenderItem, ListRenderItemInfo } from 'react-native'
+import themes from '../../themes';
+import { Alert, Text, View, } from 'react-native'
 
-import { EditButton, EditIcon, HeaderView, MainView, Title, WrapperView } from './styles'
-import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
 import NetflixLogo from '../../components/NetflixLogo'
 import SafeAreaComponent from '../../components/SafeAreaComponent'
-import ProfileIcon from '../../components/ProfileIcon';
-import { RectButton } from 'react-native-gesture-handler';
-import CustomIcon from '../../components/CustomIcon';
+import ProfileIcon, { animationGrow } from '../../components/ProfileIcon';
 
-import { FontAwesome5 } from '@expo/vector-icons';
-import { ProfileIconWrapper } from '../../components/ProfileIcon/style';
-import themes from '../../themes';
+import { EditButton, EditIcon, HeaderView, MainView, Title, WrapperView } from './styles'
 import { useNavigation } from '@react-navigation/native';
 import { RoutesProps } from '../../routes/stack.routes';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+
+import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
+import { MaterialIcons } from '@expo/vector-icons';
+import {useAnimationState} from 'moti'
+import PressableAnimation from '../../components/PressableAnimation';
+import { useProfile } from '../../contexts/profile';
 
 const users = [
   { name: 'jessica', photo: 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/fd69a733850498.56ba69ac2f221.png', color: 'blue'},
@@ -25,7 +26,7 @@ const users = [
   { name: 'Jessy e Evy', photo: 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/84c20033850498.56ba69ac290ea.png', color: 'cyan'}
 ]
 
-type ProfileChooserProps = StackNavigationProp<RoutesProps,'Home'>
+type ProfileChooserProps = StackNavigationProp<RoutesProps,'HomeRoutes'>
 
 
 export default function ProfileChooser() {
@@ -36,9 +37,12 @@ export default function ProfileChooser() {
   const navigation = useNavigation<ProfileChooserProps>()
   const isNotTheLastElement = (index:number) => index !== users.length;
   const messageUnavailable = 'This functionality is currently unavailable'
+  const {profile, setProfile} = useProfile();
 
-  const handleProfileSelection = () => {
-    navigation.push('Home')
+  const handleProfileSelection = (name: string) => {
+    console.log(name)
+    setProfile(name);
+    navigation.push('HomeRoutes');
   }
 
   if (!fontsLoaded) {
@@ -64,36 +68,19 @@ export default function ProfileChooser() {
           contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
           keyExtractor={(data: any) => data.photo}
           renderItem= {({item, index}: any) => (
-              <RectButton 
-                  onPress={
-                    isNotTheLastElement(index) ? 
-                    () => {
-                      handleProfileSelection(); 
-                    }
-                    : 
-                    () => Alert.alert(messageUnavailable)
-                  }
-              >
-                  {
-                    isNotTheLastElement(index) ?
-                    (
-                      <ProfileIcon 
-                        style={{marginHorizontal: 16, marginVertical: 14}}
-                        source={item.photo} 
-                        userName={item.name} 
-                        size={Dimensions.get('window').width / 3.5} 
-                      />
-                    )
-                    :
-                    (
-                      <ProfileIconWrapper>
-                        <FontAwesome5 name="plus-circle" size={70} color="white" />
-                        <Text style={{color: themes.COLORS.WHITE, marginTop: 20}}>Add Profile</Text>
-                      </ProfileIconWrapper>
-                    )
-                  }
-              </RectButton>
-              
+            isNotTheLastElement(index) ? 
+            (
+              <ProfileIcon onPress={() => handleProfileSelection(item.name)} userName={item.name} size={100} source={item.photo}/>
+            )
+            :
+            (
+              <View style={{alignItems: 'center'}}>
+                <PressableAnimation onPress={() => Alert.alert(messageUnavailable)} animationState={animationGrow}>
+                  <MaterialIcons style={{marginVertical: 10}} name="add-circle" size={60} color="white" />
+                </PressableAnimation>
+                <Text style={{color: themes.COLORS.WHITE}}>Adicionar perfil</Text>
+              </View>
+            )
           )}
         />
       </SafeAreaComponent>

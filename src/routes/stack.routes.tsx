@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 export type RoutesProps = {
   Login: undefined,
   ProfileChooser: undefined,
-  Home: undefined
+  HomeRoutes: undefined
 }
 
 function Routes() {
@@ -30,7 +30,7 @@ function Routes() {
             }
         />
         <Stack.Screen 
-            name={'Home'}
+            name={'HomeRoutes'}
             component={HomeRoutes}
             options={
               {headerShown: false}

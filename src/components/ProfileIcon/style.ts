@@ -6,4 +6,5 @@ export const ProfileIconWrapper = styled.View`
     width: auto;
     flex-direction: column;
     align-items: center;
+    margin: 15px;
 `;

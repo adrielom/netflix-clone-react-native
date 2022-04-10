@@ -1,7 +1,8 @@
 import { Dimensions } from 'react-native';
 import styled from "styled-components/native";
+import themes from '../../themes';
 
-const MovieCardHeight = Math.floor(Dimensions.get('window').height / 5)
+const MovieCardHeight = Math.floor(Dimensions.get('window').height / 4)
 const MovieCardWidth = Math.floor(Dimensions.get('window').width / 3)
 
 export const MovieCardStyle = styled.View`
@@ -19,18 +20,21 @@ export const MovieCardIconCircle = styled.View`
     border-width: 2px;
     border-color: white;
     position: relative;
+    margin: auto;
 `;
 
 export const MovieCardBackgroundImage = styled.ImageBackground`
-    height: auto;
-    width: auto;
+    flex: 1;
+    position: relative;
+    background-color: ${themes.COLORS.GREY_LIGHT};
+    width: 100%;
 `;
 
 export const SeriesText = styled.Text`
 
 `;
 export const MovieCardFooter = styled.View`
-    background-color: #202020;
+    background-color: ${themes.COLORS.GREY_LIGHT};
     flex-direction: row;
     justify-content: space-around;
     position: absolute;

@@ -17,14 +17,8 @@ import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
 import { MaterialIcons } from '@expo/vector-icons';
 import {useAnimationState} from 'moti'
 import PressableAnimation from '../../components/PressableAnimation';
-import { useProfile } from '../../contexts/profile';
-
-const users = [
-  { name: 'jessica', photo: 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/fd69a733850498.56ba69ac2f221.png', color: 'blue'},
-  { name: 'rute', photo: 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/c7906d33850498.56ba69ac353e1.png', color: 'red'},
-  { name: 'Márcio', photo: 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/bb3a8833850498.56ba69ac33f26.png', color: 'purple'},
-  { name: 'Jessy e Evy', photo: 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/84c20033850498.56ba69ac290ea.png', color: 'cyan'}
-]
+import { ProfileStruct, useProfile } from '../../contexts/profile';
+import { avatarImages } from '../../services/images'
 
 type ProfileChooserProps = StackNavigationProp<RoutesProps,'HomeRoutes'>
 
@@ -35,13 +29,12 @@ export default function ProfileChooser() {
     Inter_400Regular,
   });
   const navigation = useNavigation<ProfileChooserProps>()
-  const isNotTheLastElement = (index:number) => index !== users.length;
+  const isNotTheLastElement = (index:number) => index !== avatarImages.length;
   const messageUnavailable = 'This functionality is currently unavailable'
   const {profile, setProfile} = useProfile();
 
-  const handleProfileSelection = (name: string) => {
-    console.log(name)
-    setProfile(name);
+  const handleProfileSelection = (name: string, imageSource: string) => {
+    setProfile({name, source: imageSource} as ProfileStruct);
     navigation.push('HomeRoutes');
   }
 
@@ -63,14 +56,19 @@ export default function ProfileChooser() {
         <Title style={{fontFamily: 'Inter_400Regular'}}> Who's watching? </Title>
 
         <MainView
-          data={[...users, {}, {}]}
+          data={[...avatarImages, {}, {}]}
           numColumns={2}
           contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
           keyExtractor={(data: any) => data.photo}
           renderItem= {({item, index}: any) => (
             isNotTheLastElement(index) ? 
             (
-              <ProfileIcon onPress={() => handleProfileSelection(item.name)} userName={item.name} size={100} source={item.photo}/>
+              <ProfileIcon onPress={
+                              () => handleProfileSelection(item.name, item.photo)} 
+                           userName={item.name} 
+                           size={100} 
+                           source={item.photo}
+              />
             )
             :
             (

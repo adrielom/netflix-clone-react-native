@@ -1,11 +1,18 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react"
 
+export type ProfileStruct = {
+  name: string, 
+  source: string
+}
+
 export interface IProfile {
-  profile: string,
-  setProfile: (profile: string) => void
+  profile: ProfileStruct,
+  setProfile: (profile: ProfileStruct) => void
 }
 const defaultProfile: IProfile = {
-  profile: '',
+  profile: {
+    name: "User",
+  } as ProfileStruct,
   setProfile: () => {}
 }
 

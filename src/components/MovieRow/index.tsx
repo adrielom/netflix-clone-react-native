@@ -1,8 +1,8 @@
-import {View, ViewProps } from 'react-native'
+import {FlatList, ListRenderItemInfo, ViewProps } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import MovieCard from '../MovieCard'
 import { Movie } from '../../types'
-import { getAllByGenre, getTrendingMovies } from '../../services/api'
+import { getAllByGenre } from '../../services/api'
 import { MovieRowStyle } from './style'
 
 type Props = ViewProps & {
@@ -24,11 +24,22 @@ export default function MovieRow({category}: Props) {
 
   return (
     <MovieRowStyle>
-        {
-            movieList.map(movie => (
-                <MovieCard key={movie.id} imageSource={{uri: movie.poster_path}}/>
-            ))
-        }
+        <FlatList
+            initialNumToRender={10}
+            windowSize={5}
+            maxToRenderPerBatch={5}
+            updateCellsBatchingPeriod={30}
+            removeClippedSubviews={false}
+            onEndReachedThreshold={0.1}
+            horizontal={true}
+            contentContainerStyle={{marginLeft: 15}}
+            data={movieList}
+            keyExtractor={(movie) => movie.id}
+            renderItem={
+                ({item}: ListRenderItemInfo<Movie>) =>  (      
+                        <MovieCard key={item.id} imageSource={{uri: `https://image.tmdb.org/t/p/w500/${item?.poster_path}`}}/>
+            )}
+        />
     </MovieRowStyle>
   )
 }

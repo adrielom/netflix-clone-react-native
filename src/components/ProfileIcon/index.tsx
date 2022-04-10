@@ -8,6 +8,7 @@ export type ProfileIconWrapperProps = ViewProps & {
     userName: string,
     size: number,
     source: string,
+    showName?: boolean,
     onPress: Function
 }
 
@@ -20,7 +21,7 @@ export const animationGrow = {
   }
 }; 
 
-export default function ProfileIcon({source, size, userName, onPress,  ...rest}: ProfileIconWrapperProps) {
+export default function ProfileIcon({source, size, userName, onPress, showName = true,  ...rest}: ProfileIconWrapperProps) {
   return (
     <ProfileIconWrapper
       { ...rest }   
@@ -28,7 +29,11 @@ export default function ProfileIcon({source, size, userName, onPress,  ...rest}:
       <PressableAnimation onPress={onPress} animationState={animationGrow}>
         <Image source={{uri: source}} style={{height: size, width: size, marginBottom: 8, borderRadius: 4}} />
       </PressableAnimation>
-      <Text style={{color: themes.COLORS.WHITE, fontSize: themes.FONTS_SIZE.s_md}}>{userName}</Text>
+      {
+        showName && 
+          <Text style={{color: themes.COLORS.WHITE, fontSize: themes.FONTS_SIZE.s_md}}>
+            {userName}
+          </Text>}
     </ProfileIconWrapper>
   )
 }

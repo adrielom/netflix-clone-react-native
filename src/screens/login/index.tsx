@@ -36,7 +36,6 @@ const Login = () => {
       const movie = data[Math.floor(Math.random() * data.length)] as Movie;
       setMovie(movie)
      } catch (error) {
-       console.log(error)
      }
     }
     photoUrl()

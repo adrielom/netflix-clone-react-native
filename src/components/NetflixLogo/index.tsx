@@ -7,16 +7,17 @@ const NETFLIX_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netfli
 type Props = {
     height?: number,
     width?: number,
-    zIndex?: number
+    zIndex?: number,
+    source?: string
 }
 
-export default function NetflixLogo({height, width, zIndex}: Props) {
+export default function NetflixLogo({height, width, zIndex, source}: Props) {
   return (
     <SvgUri 
         style={{zIndex: zIndex ? zIndex : 3}} 
         height={height ? height : 45} 
         width={width ? width : '45%'} 
-        uri={NETFLIX_LOGO}
+        uri={source ? source : NETFLIX_LOGO}
     />
   )
 }

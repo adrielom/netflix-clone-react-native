@@ -1,51 +1,71 @@
+import { ActivityIndicator, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { WrapperView } from '../ProfileChooser/styles'
 import SafeAreaComponent from '../../components/SafeAreaComponent'
 import Title from '../../components/TitleWhite'
 import { useProfile } from '../../contexts/profile'
-import { getGenres, getLatest, getTopRated, getTrendingMovies } from '../../services/api'
-import { Category, Genre, LatestMovie, Movie, TopRated } from '../../types'
+import { getGenres, getLatest, getTrendingMovies } from '../../services/api'
+import { Category, Genre, LatestMovie, Movie } from '../../types'
 import themes from '../../themes'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
-import MovieCard from '../../components/MovieCard'
 import MovieRow from '../../components/MovieRow'
-import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import TrendingShow from '../../components/TrendingShow'
+import AppLoading from 'expo-app-loading'
 
 export default function Home() {
 
   const [movieLists, setMovieLists] = useState<Category[]>([])
-  const [latestMovie, setLatestMovie] = useState<LatestMovie>();
-  const [trending, setTrending] = useState<Movie>()
-  const [trendingData, setTrendingData] = useState<Movie[]>([])
+  const [trending, setTrending] = useState<Movie | undefined>()
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_700Bold
   })
+  const [showTrending, setShowTrending] = useState(false)
 
   useEffect(() => {
     const getLists = async () => {
-      const genreData = await getGenres("movie") as Genre[];
-      const trendingResult = await getTrendingMovies() as Array<Movie>;
-      setTrendingData(trendingResult);
-      setMovieLists([{name: "All Trending", id: Date.now()}, ...genreData]);
-      const latestData = await getLatest("movie") as LatestMovie;
-      setLatestMovie(latestData);
-      const trendingMovie = trendingData[Math.floor(Math.random() * trendingData.length)] as Movie;
+      const trendingResult = await getTrendingMovies();
+      let trendingMovie = trendingResult[Math.floor(Math.random() * trendingResult.length)];
       setTrending(trendingMovie);
     }
     getLists();
   }, [])
+
+  useEffect(() => {
+    const getLists = async () => {
+      const genreData = await getGenres("movie") as Genre[];
+      setMovieLists([...genreData]);
+    }
+    getLists();
+  }, [])
+
+
+  useEffect(() => {
+    if (trending !== undefined) {
+      setShowTrending(true)
+    }
+  }, [trending])
+  
   
 
   const {profile, setProfile} = useProfile();
 
-  return (
-    <WrapperView>
+  if (!fontsLoaded)
+      return <AppLoading />
+  else {
+    return (
+      <WrapperView>
       <SafeAreaComponent>
-        <Title>hey, {profile}</Title>
         <ScrollView>
+        {
+          showTrending ? (
+              <TrendingShow showCoverBillboard={`${trending?.poster_path}`} categories={'blabla'} profileIconSource={profile.source} userName={profile.name}/>
+          ) : (
+            <ActivityIndicator style={{marginVertical: 10}} size={50} color={themes.COLORS.RED}/>
+          )
+        }
         {
           movieLists.map(genre => (
               <View key={genre.id}>
@@ -67,5 +87,6 @@ export default function Home() {
         </ScrollView>
       </SafeAreaComponent>
     </WrapperView>
-  )
+    )
+  }
 }

@@ -1,7 +1,6 @@
-import { View, Text, ViewProps, Image, Pressable, ImageSourcePropType, Dimensions } from 'react-native'
+import { View, Text, ViewProps, TouchableOpacity, Image, Pressable, ImageSourcePropType, Dimensions } from 'react-native'
 import React from 'react'
-import NetflixLogo from '../NetflixLogo'
-import ProfileIcon from '../ProfileIcon'
+
 import { CategoriesText, Footer, Header, IconSet, More, N_Netflix, TrendingWatch } from './style'
 import MyWatchListButton from '../MyWatchList'
 import { Feather } from '@expo/vector-icons';
@@ -14,15 +13,12 @@ import AppLoading from 'expo-app-loading'
 import { LinearGradient } from 'expo-linear-gradient'
 
 type Props = ViewProps & {
-    profileIconSource: string,
-    userName:string,
     categories: string,
     showCoverBillboard: string;
 }
 
-const Netflix = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Netflix_2015_N_logo.svg/1200px-Netflix_2015_N_logo.png';
 
-export default function TrendingShow({profileIconSource, userName, categories, showCoverBillboard}: Props) {
+export default function TrendingShow({categories, showCoverBillboard}: Props) {
 
     const [fontsLoaded] = useFonts({
         Inter_700Bold
@@ -52,26 +48,17 @@ export default function TrendingShow({profileIconSource, userName, categories, s
                         locations={[0, 0.05, 0.25, 1]}
                         style={{flex: 1}}                 
                 >
-               
-                <Header>
-                    <N_Netflix source={{uri: Netflix}}/>
-                    <IconSet>
-                        <Feather name="search" size={24} color="white" />
-                        <Feather name="sliders" style={{marginHorizontal: 13}} size={24} color="white" />                
-                        <ProfileIcon size={25} showName={false} source={profileIconSource} userName={userName} onPress={() => {}}/>
-                    </IconSet>
-                </Header>
 
                 <Footer>
-                    <CategoriesText style={{fontSize: RFPercentage(1.8)}}>{categories}</CategoriesText>
+                    <CategoriesText style={{fontSize: RFPercentage(1.8), marginBottom: 10}}>{categories}</CategoriesText>
                     <View style={{flexDirection: 'row', width: '80%', justifyContent: 'space-between'}}>
                         <MyWatchListButton text='Minha Lista' />
-                        <Pressable style={{backgroundColor: themes.COLORS.GREY_LIGHT, flexDirection: 'row', margin: 5, padding: 10, minWidth: '33%',position: 'relative', alignItems: 'center'}}>
-                            <FontAwesome style={{marginLeft: 10}} name="play" size={18} color="black" /><Feather />
-                            <Text style={{ marginLeft: "10%",  fontFamily: 'Inter_700Bold'}}>Assistir</Text>
-                        </Pressable>
+                        <TouchableOpacity activeOpacity={0.85} style={{backgroundColor: themes.COLORS.GREY_LIGHT, flexDirection: 'row', margin: 5, padding: 10, minWidth: '33%',position: 'relative', alignItems: 'center'}}>
+                            <FontAwesome style={{marginLeft: 10}} name="play" size={18} color={themes.COLORS.WHITE} /><Feather />
+                            <Text style={{ marginLeft: "10%", color: themes.COLORS.WHITE ,fontFamily: 'Inter_700Bold'}}>Assistir</Text>
+                        </TouchableOpacity>
                         <More>
-                            <Feather name='info' size={25} />
+                            <Feather name='info' color={themes.COLORS.WHITE} size={25} />
                             <Text style={{color: themes.COLORS.WHITE, fontSize: RFPercentage(1.5)}}>Saiba Mais</Text>
                         </More>
                     </View>

@@ -4,7 +4,10 @@ export const Header = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin: 0 5px;
+    position: absolute;
+    top: 15px;
+    z-index: 10;
+    width: 100%;
 `;
 
 export const N_Netflix = styled.Image`

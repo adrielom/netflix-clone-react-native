@@ -26,4 +26,7 @@ export const getAllByGenre =async (type: 'tv' | 'movie', genreId: number, page =
    const result = await axios.get(`https://api.themoviedb.org/3/discover/${type}?api_key=${TOKEN}&with_genres=${genreId}&page=${page}`);
    return result.data.results;
 }
-
+export const getTrailer =async (type: 'tv' | 'movie', genreId: number, page = 1) => {
+   const result = await axios.get(`https://api.themoviedb.org/3/${type}/videos?api_key=${TOKEN}&language=pth-BR&page=1`);
+   return result.data.results;
+}

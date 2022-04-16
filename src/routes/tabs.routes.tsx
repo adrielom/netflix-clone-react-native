@@ -15,12 +15,12 @@ export default function HomeRoutes() {
             tabBarLabelPosition: 'below-icon',
             headerShown: false,
             tabBarStyle: {
-                height: 74,
-                paddingBottom: 18,
+                height: 55,
+                paddingBottom: 5,
                 backgroundColor: themes.COLORS.GREY
             },
             tabBarIcon: ({size, color}) => (
-                <Foundation name="home" size={30} color={themes.COLORS.WHITE} />
+                <Foundation name="home" size={24} color={themes.COLORS.WHITE} />
             ),  
         
         }}

@@ -55,12 +55,12 @@ const Login = () => {
               <NetflixLogo />
               <LoginForm>
                 <InputLayout
-                    style={{borderBottomColor: 'white', borderBottomWidth: 1, marginTop: '20%', fontFamily: 'Inter_400Regular'}} placeholderTextColor={themes.COLORS.WHITE}
+                    style={{borderBottomColor: themes.COLORS.WHITE, borderBottomWidth: 1, marginTop: '20%', fontFamily: 'Inter_400Regular'}} placeholderTextColor={themes.COLORS.WHITE}
                     placeholder='Email'
                     keyboardType='email-address'
                 />
                 <InputLayout
-                    style={{borderBottomColor: 'white', borderBottomWidth: 1, fontFamily: 'Inter_400Regular'}} placeholderTextColor={themes.COLORS.WHITE}
+                    style={{borderBottomColor: themes.COLORS.WHITE, borderBottomWidth: 1, fontFamily: 'Inter_400Regular'}} placeholderTextColor={themes.COLORS.WHITE}
                     placeholder='Password'
                     secureTextEntry={true}
                 />

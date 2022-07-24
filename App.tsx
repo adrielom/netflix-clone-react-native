@@ -1,12 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
 import AppRoutes from './src/routes';
 import {ProfileProvider} from './src/contexts/profile'
+import { TrendingImageProvider } from './src/contexts/trendingImage';
 
 export default function App() {
   return (
     <ProfileProvider>
-       <AppRoutes/>
+      <TrendingImageProvider>
+        <AppRoutes/>
+      </TrendingImageProvider>
     </ProfileProvider>
   );
 }
